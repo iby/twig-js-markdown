@@ -10,6 +10,7 @@
     },
     "files": [
         "../dependency/typings/reference.d.ts",
-        "../source/dts/reference.d.ts"
+        "../source/dts/reference.d.ts",
+        "../source/ts/index.ts"
     ]
 }

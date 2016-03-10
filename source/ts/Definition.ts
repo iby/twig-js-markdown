@@ -12,19 +12,20 @@ export function Definition(core:any) {
         open: true,
         compile: function (token:TokenDefinition) {
 
-            // Turn parameters into tokens.
+            // Turn parameters into tokens, we may or may not receive the file path, much explicitly check
+            // to avoid fuck ups.
 
-            token.stack = core.expression.compile.apply(this, [{
+            token.stack = token.match[1] != null ? core.expression.compile.apply(this, [{
                 type: core.expression.type.expression,
                 value: token.match[1]
-            }]).stack;
+            }]).stack : [];
 
             delete token.match;
 
             return token;
         },
         parse: function (token:TokenDefinition, context:Context, chain:any) {
-            var path:string = core.expression.parse.apply(this, [token.stack, context]);
+            var path:string = token.stack.length > 0 ? core.expression.parse.apply(this, [token.stack, context]) : '';
             var markdown:string;
 
             // If we have a path in the arguments and it exists, we load that file and use it in as the source,
