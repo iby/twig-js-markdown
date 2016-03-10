@@ -1,0 +1,15 @@
+{
+    "compilerOptions": {
+        "declaration": true,
+        "module": "commonjs",
+        "moduleResolution": "classic",
+        "noImplicitAny": true,
+        "removeComments": true,
+        "outDir": "../product/js",
+        "target": "es5"
+    },
+    "files": [
+        "../dependency/typings/reference.d.ts",
+        "../source/dts/reference.d.ts"
+    ]
+}
