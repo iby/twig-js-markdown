@@ -2,7 +2,7 @@
     "description": "Markdown extension for twig.js",
     "license": "MIT",
     "name": "twig-markdown",
-    "version": "0.0.2",
+    "version": "0.0.3",
     "repository": "https://github.com/ianbytchek/twig-js-markdown",
     "dependencies": {
         "marked": "*",
@@ -12,6 +12,8 @@
         "del": "*",
         "fs-extra": "*",
         "gulp": "*",
+        "gulp-if": "*",
+        "gulp-insert": "*",
         "gulp-json-editor": "*",
         "gulp-typescript": "*",
         "merge-stream": "*",

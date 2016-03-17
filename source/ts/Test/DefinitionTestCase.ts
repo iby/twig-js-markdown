@@ -1,4 +1,5 @@
 /// <reference path="../../../dependency/typings/reference.d.ts" />
+/// <reference path="../../dts/reference.d.ts" />
 
 import {Definition} from '../Definition';
 import {Template} from 'twig';
@@ -15,9 +16,12 @@ suite('twig markdown', function () {
         template.render().should.equal('<h1 id="foo">foo</h1>\n<p>bar</p>\n');
     });
 
-    test('fallback to block contents if markdown is not found at the given path', function () {
-        var template:Template = twig.twig({data: "{% markdown 'null.md' %}NOT FOUND!{% endmarkdown %}"});
-        template.render().should.equal('<p>NOT FOUND!</p>\n');
+    test('error if markdown is not found at the given path', function () {
+        var source:string = "{% markdown 'null.md' %}{% endmarkdown %}";
+
+        (function () {
+            twig.twig({data: source, rethrow: true, trace: false}).render();
+        }).should.throw();
     });
 
     test('compile markdown in the block', function () {

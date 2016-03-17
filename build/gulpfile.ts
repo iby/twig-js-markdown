@@ -7,9 +7,11 @@ import {TaskCallback} from 'gulp';
 import del = require('del');
 import fse = require('fs-extra');
 import gulp = require('gulp');
+import insert = require('gulp-insert');
 import json = require('gulp-json-editor');
 import merge = require('merge-stream');
 import path = require('path');
+import gulpif = require('gulp-if');
 import sequence = require('run-sequence');
 import tsc = require('gulp-typescript');
 
