@@ -26,17 +26,34 @@ npm install twig-markdown --save
 In typescript:
 
 ```typescript
-import {Definition as TwigMarkdownDefinition} from 'twig-markdown';
-import Twig = require('twig');
+import twigMarkdown = require('twig-markdown');
+import twig = require('twig');
 
-Twig.extend(TwigMarkdownDefinition);
+twig.extend(twigMarkdown);
 ```
 
 In javascript:
 
 ```js
-var TwigMarkdownDefinition = require('twig-markdown').Definition;
-var Twig = require('twig');
+var twigMarkdown = require('twig-markdown');
+var twig = require('twig');
 
-Twig.extend(TwigMarkdownDefinition);
+twig.extend(twigMarkdown);
+```
+
+In javascript with [gulp-twig](https://github.com/zimmen/gulp-twig) plugin:
+
+```js
+var twigMarkdown = require('twig-markdown');
+var twigFoo = require('twig-foo');
+var twig = require('gulp-twig');
+
+// With only markdown extension.
+twig({data: {}, extend: twigMarkdown});
+
+// With multiple extensions.
+twig({data: {}, extend: function(Twig){
+    twigMarkdown(Twig);
+    twigFoo(Twig);
+}});
 ```
