@@ -1,16 +1,46 @@
 import {Core, CompiledToken, Context, ParsedToken, Token} from 'twig';
 
 import fs = require('fs');
-import twig = require('twig');
 import marked = require('marked');
 import path = require('path');
 
 import pathJoin = path.join;
 import pathIsAbsolute = path.isAbsolute;
 
-export function Definition(core:any):void {
+export function unindent(string:string) {
+    var regexp:RegExp = /^\s+/;
+    var match:string[];
 
-    // Fixme: this is a shitty hack until there's a better way dealing with definitions, twig repository accepts typings PR…
+    // Do a quick test, if first line is unintended there's no need to carry on.
+
+    if ((match = string.match(regexp)) == null) {
+        return string;
+    }
+
+    var lines:string[] = string.split(/\n/);
+    var indentation:string = null;
+
+    for (let line of lines) {
+
+        // Ignore completely empty lines, otherwise if we got no match it means string is unintended, meaning
+        // we can return right here. Otherwise carry on.
+
+        if (line === '') {
+            continue;
+        } else if ((match = line.match(regexp)) == null) {
+            return string;
+        } else if (indentation == null || indentation.length > match[0].length) {
+            indentation = match[0];
+        }
+    }
+
+    return string.replace(new RegExp('^' + indentation), '').replace(new RegExp('\n' + indentation, 'g'), '\n');
+}
+
+export function extend(core:any):void {
+
+    // Fixme: this is a shitty hack until there's a better way dealing with definitions, twig repository accepts
+    // fixme: typings PR… Without this depending projects require the full-blown twig definition.
 
     var Twig:Core = core;
 
@@ -50,7 +80,9 @@ export function Definition(core:any):void {
             // otherwise use whatever is provided in the block.
 
             try {
-                markdown = path == null ? Twig.parse.apply(this, [token.output, context]) : fs.readFileSync(path, 'utf8');
+                markdown = path == null
+                    ? unindent(Twig.parse.apply(this, [token.output, context]))
+                    : fs.readFileSync(path, 'utf8');
             } catch (error) {
                 throw new Core.Error('Markdown file `' + path + '` could not be found.');
             } finally {

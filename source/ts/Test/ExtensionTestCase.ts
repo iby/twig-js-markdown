@@ -1,7 +1,7 @@
 /// <reference path="../../../dependency/typings/reference.d.ts" />
 /// <reference path="../../dts/reference.d.ts" />
 
-import {Definition} from '../Definition';
+import {extend, unindent} from '../Extension';
 import {Template} from 'twig';
 
 import twig = require('twig');
@@ -9,7 +9,7 @@ import twig = require('twig');
 require('should');
 
 suite('twig markdown', function () {
-    twig.extend(Definition);
+    twig.extend(extend);
 
     test('compile markdown with a relative path to the current working directory', function () {
         var template:Template = twig.twig({data: "{% markdown './test/markdown.md' %}NOT FOUND!{% endmarkdown %}"});
@@ -33,4 +33,22 @@ suite('twig markdown', function () {
     //     var template:Template = twig.twig({data: "{% markdown './test/markdown.md' %}"});
     //     template.render().should.equal('<h1 id="foo">foo</h1>\n<p>bar</p>\n');
     // });
+});
+
+suite('unindent', function () {
+    test('unindent non-indented line', function () {
+        unindent('foo\n  bar').should.equal('foo\n  bar');
+    });
+
+    test('unindent line with simple indentation', function () {
+        unindent('  foo\n  bar\n  baz').should.equal('foo\nbar\nbaz');
+    });
+
+    test('unindent line with complex indentation', function () {
+        unindent('  foo\n  bar\nbaz').should.equal('  foo\n  bar\nbaz');
+    });
+
+    test('unindent line with even more complex indentation', function () {
+        unindent('    foo\n  bar\n baz').should.equal('   foo\n bar\nbaz');
+    });
 });

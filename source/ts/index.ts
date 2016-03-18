@@ -1,2 +1,2 @@
-import {Definition} from './Definition';
-export = Definition;
+import {extend} from './Extension';
+export = extend;
