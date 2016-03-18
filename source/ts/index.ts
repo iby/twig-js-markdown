@@ -1,1 +1,2 @@
-export {Definition} from './Definition';
+import {Definition} from './Definition';
+export = Definition;
