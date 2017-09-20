@@ -37,7 +37,7 @@ export function unindent(string:string) {
     return string.replace(new RegExp('^' + indentation), '').replace(new RegExp('\n' + indentation, 'g'), '\n');
 }
 
-export function extend(core:any):void {
+export function extend(core:any, options = {}):void {
 
     // Fixme: this is a shitty hack until there's a better way dealing with definitions, twig repository accepts
     // fixme: typings PR… Without this depending projects require the full-blown twig definition.
@@ -91,7 +91,7 @@ export function extend(core:any):void {
 
             return {
                 chain: chain,
-                output: markdown == null ? '' : marked(markdown)
+                output: markdown == null ? '' : marked(markdown, options)
             };
         }
     };
