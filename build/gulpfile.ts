@@ -1,25 +1,19 @@
-/// <reference path="../dependency/typings/reference.d.ts"/>
-
 import ReadWriteStream = NodeJS.ReadWriteStream;
-import {CompilationStream, TsConfig as Configuration, Project} from 'gulp-typescript';
+import {CompileStream, Project} from 'gulp-typescript';
 import {TaskCallback} from 'gulp';
 
 import del = require('del');
-import fse = require('fs-extra');
 import gulp = require('gulp');
-import insert = require('gulp-insert');
 import json = require('gulp-json-editor');
 import merge = require('merge-stream');
-import path = require('path');
-import gulpif = require('gulp-if');
 import sequence = require('run-sequence');
 import tsc = require('gulp-typescript');
 
 /**
  * Clean products.
  */
-gulp.task('clean', function ():ReadWriteStream {
-    var paths:[string] = [
+gulp.task('clean', function ():Promise<string[]> {
+    var paths:string[] = [
         '../product/*.json',
         '../product/*.md',
         '../product/js',
@@ -34,7 +28,7 @@ gulp.task('clean', function ():ReadWriteStream {
  */
 gulp.task('build', function ():ReadWriteStream {
     var project:Project = tsc.createProject('tsconfig.json');
-    var configuration:Configuration = project.config;
+    var configuration = project.config;
 
     // Must update package details that goes into product for npm deployment.
 
@@ -45,7 +39,7 @@ gulp.task('build', function ():ReadWriteStream {
 
     // Compile typescript to product, copy any associated files there too.
 
-    var compileStream:CompilationStream = <CompilationStream>gulp.src(configuration.files.concat(['../source/ts/**/*.ts'])).pipe(tsc(project));
+    var compileStream:CompileStream = <CompileStream>gulp.src(configuration.files.concat(['../source/ts/**/*.ts'])).pipe(project());
     var fileStream:ReadWriteStream = merge(
         gulp.src('../dependency/package.json').pipe(json(packagePatch)).pipe(gulp.dest('../product')),
         gulp.src('../README.md', {base: '..'}).pipe(gulp.dest('../product')),

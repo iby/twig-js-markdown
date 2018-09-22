@@ -3,12 +3,12 @@
         "declaration": true,
         "module": "commonjs",
         "noImplicitAny": true,
-        "removeComments": true,
         "outDir": "../product/js",
-        "target": "es5"
+        "removeComments": true,
+        "target": "es2018",
+        "typeRoots": ["../dependency/node_modules/@types"]
     },
     "files": [
-        "../dependency/typings/reference.d.ts",
         "../source/dts/reference.d.ts",
         "../source/ts/index.ts"
     ]

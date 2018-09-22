@@ -60,18 +60,15 @@ twig({data: {}, extend: function(Twig){
 
 ## Contribute
 
-Install npm and tsd dependencies and you're good to go, assuming you also have globally installed [ts-node](https://github.com/TypeStrong/ts-node) and [typescript](https://github.com/Microsoft/TypeScript) packages.
+Install npm and tsd dependencies and you're good to go, assuming you also have globally installed [ts-node](https://github.com/TypeStrong/ts-node) and [typescript](https://github.com/Microsoft/TypeScript) packages, make sure to `cd dependency`.
 
 ```sh
-cd dependency
 npm install
-tsd install
 ```
 
-Build using gulp.
+Build using gulp, make sure to `cd build`.
 
 ```sh
-cd build
 gulp # or gulp watch
 ```
 

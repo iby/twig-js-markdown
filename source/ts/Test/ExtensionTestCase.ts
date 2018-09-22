@@ -1,4 +1,3 @@
-/// <reference path="../../../dependency/typings/reference.d.ts" />
 /// <reference path="../../dts/reference.d.ts" />
 
 import {extend, unindent} from '../Extension';

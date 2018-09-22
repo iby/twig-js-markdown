@@ -1,16 +1,5 @@
-declare module 'gulp-insert' {
-    export function append(string:string):any;
-    export function prepend(string:string):any;
-}
-
-declare module 'del' {
-    function del(pattern:any, options:any):any;
-    export = del;
-}
-
 // Todo: the same definition was supplied to official repo, watch for the pr to get accepted
 // todo: and remove this, https://github.com/justjohn/twig.js/pull/336.
-
 declare module 'twig' {
     import {Context, Token, Parameters, Template, Core} from 'twig';
 
