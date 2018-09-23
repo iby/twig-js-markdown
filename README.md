@@ -60,23 +60,23 @@ twig({data: {}, extend: function(Twig){
 
 ## Contribute
 
-Install npm and tsd dependencies and you're good to go, assuming you also have globally installed [ts-node](https://github.com/TypeStrong/ts-node) and [typescript](https://github.com/Microsoft/TypeScript) packages.
+Install npm and tsd dependencies and you're good to go, assuming you also have globally installed [ts-node](https://github.com/TypeStrong/ts-node) and [typescript](https://github.com/Microsoft/TypeScript) packages, make sure to `cd dependency`.
 
 ```sh
-cd dependency
 npm install
-tsd install
 ```
 
-Build using gulp.
+Build using gulp, make sure to `cd build`.
 
 ```sh
-cd build
 gulp # or gulp watch
 ```
 
-Test using mocha, js only due to [ts-node#39](https://github.com/TypeStrong/ts-node/issues/39).
+Test using mocha.
 
 ```sh
+# TypeScript directly…
+mocha --require ts-node/register --ui tdd source/ts/Test/**/*.ts
+# …or built js.
 mocha --ui tdd product/js/Test/**/*.js
 ```
