@@ -13,7 +13,7 @@ import tsc = require('gulp-typescript');
  * Clean products.
  */
 gulp.task('clean', function (): Promise<string[]> {
-    var paths: string[] = [
+    const paths: string[] = [
         '../product/*.json',
         '../product/*.md',
         '../product/js',
@@ -27,20 +27,20 @@ gulp.task('clean', function (): Promise<string[]> {
  * Build products.
  */
 gulp.task('build', function (): ReadWriteStream {
-    var project: Project = tsc.createProject('tsconfig.json');
-    var configuration = project.config;
+    const project: Project = tsc.createProject('tsconfig.json');
+    const configuration = project.config;
 
     // Must update package details that goes into product for npm deployment.
 
-    var packagePatch: Object = {
+    const packagePatch: Object = {
         main: 'js/index.js',
         typings: 'ts/index.d.ts'
     };
 
     // Compile typescript to product, copy any associated files there too.
 
-    var compileStream: CompileStream = <CompileStream>gulp.src(configuration.files.concat(['../source/ts/**/*.ts'])).pipe(project());
-    var fileStream: ReadWriteStream = merge(
+    const compileStream: CompileStream = <CompileStream>gulp.src(configuration.files.concat(['../source/ts/**/*.ts'])).pipe(project());
+    const fileStream: ReadWriteStream = merge(
         gulp.src('../dependency/package.json',).pipe(json(packagePatch)).pipe(gulp.dest('../product')),
         gulp.src('../README.md', {base: '..'}).pipe(gulp.dest('../product')),
         gulp.src('../source/json/**/*', {base: '../source'}).pipe(gulp.dest('../product')));

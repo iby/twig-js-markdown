@@ -11,12 +11,12 @@ suite('twig markdown', function () {
     twig.extend(extend);
 
     test('compile markdown with a relative path to the current working directory', function () {
-        var template: Template = twig.twig({data: "{% markdown './test/markdown.md' %}NOT FOUND!{% endmarkdown %}"});
+        const template: Template = twig.twig({data: "{% markdown './test/markdown.md' %}NOT FOUND!{% endmarkdown %}"});
         template.render().should.equal('<h1 id="foo">foo</h1>\n<p>bar</p>\n');
     });
 
     test('error if markdown is not found at the given path', function () {
-        var source: string = "{% markdown 'null.md' %}{% endmarkdown %}";
+        const source: string = "{% markdown 'null.md' %}{% endmarkdown %}";
 
         (function () {
             twig.twig({data: source, rethrow: true, trace: false}).render();
@@ -24,7 +24,7 @@ suite('twig markdown', function () {
     });
 
     test('compile markdown in the block', function () {
-        var template: Template = twig.twig({data: "{% markdown %}# Foo{% endmarkdown %}"});
+        const template: Template = twig.twig({data: "{% markdown %}# Foo{% endmarkdown %}"});
         template.render().should.equal('<h1 id="foo">Foo</h1>\n');
     });
 
