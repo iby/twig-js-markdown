@@ -7,9 +7,9 @@ import path = require('path');
 import pathJoin = path.join;
 import pathIsAbsolute = path.isAbsolute;
 
-export function unindent(string:string) {
-    var regexp:RegExp = /^\s+/;
-    var match:string[];
+export function unindent(string: string) {
+    var regexp: RegExp = /^\s+/;
+    var match: string[];
 
     // Do a quick test, if first line is unintended there's no need to carry on.
 
@@ -17,8 +17,8 @@ export function unindent(string:string) {
         return string;
     }
 
-    var lines:string[] = string.split(/\n/);
-    var indentation:string = null;
+    var lines: string[] = string.split(/\n/);
+    var indentation: string = null;
 
     for (let line of lines) {
 
@@ -37,21 +37,21 @@ export function unindent(string:string) {
     return string.replace(new RegExp('^' + indentation), '').replace(new RegExp('\n' + indentation, 'g'), '\n');
 }
 
-export function extend(core:any):void {
+export function extend(core: any): void {
 
     // Fixme: this is a shitty hack until there's a better way dealing with definitions, twig repository accepts
     // fixme: typings PR… Without this depending projects require the full-blown twig definition.
 
-    var Twig:Core = core;
+    var Twig: Core = core;
 
-    var markdownToken:Token = {
+    var markdownToken: Token = {
         type: 'markdown',
         regex: /^markdown(?:\s+(.+))?$/,
         next: ['endmarkdown'],
         open: true,
-        compile: function (token:Token):CompiledToken {
-            var compiledToken:CompiledToken = <any>token;
-            var match:string[] = token.match;
+        compile: function (token: Token): CompiledToken {
+            var compiledToken: CompiledToken = <any>token;
+            var match: string[] = token.match;
 
             delete token.match;
 
@@ -65,10 +65,10 @@ export function extend(core:any):void {
 
             return compiledToken;
         },
-        parse: function (token:CompiledToken, context:Context, chain:any):ParsedToken {
-            var path:string = token.stack.length > 0 ? Twig.expression.parse.apply(this, [token.stack, context]) : null;
-            var markdown:string;
-            var file:any = context == null ? null : context['_file'];
+        parse: function (token: CompiledToken, context: Context, chain: any): ParsedToken {
+            var path: string = token.stack.length > 0 ? Twig.expression.parse.apply(this, [token.stack, context]) : null;
+            var markdown: string;
+            var file: any = context == null ? null : context['_file'];
 
             // Make markdown file location relative to template file if we have that information.
 
@@ -96,7 +96,7 @@ export function extend(core:any):void {
         }
     };
 
-    var endmarkdownToken:Token = {
+    var endmarkdownToken: Token = {
         type: 'endmarkdown',
         regex: /^endmarkdown$/,
         next: [],
