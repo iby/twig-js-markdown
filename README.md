@@ -72,8 +72,11 @@ Build using gulp, make sure to `cd build`.
 gulp # or gulp watch
 ```
 
-Test using mocha, js only due to [ts-node#39](https://github.com/TypeStrong/ts-node/issues/39).
+Test using mocha.
 
 ```sh
+# TypeScript directly…
+mocha --require ts-node/register --ui tdd source/ts/Test/**/*.ts
+# …or built js.
 mocha --ui tdd product/js/Test/**/*.js
 ```
