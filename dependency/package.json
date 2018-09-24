@@ -32,6 +32,7 @@
         "gulp-json-editor": "^2.4.2",
         "merge-stream": "^1.0.1",
         "mocha": "^5.2.0",
+        "mocha-typescript": "^1.1.17",
         "run-sequence": "^2.2.1",
         "should": "^13.2.3",
         "ts-node": "^7.0.1",
