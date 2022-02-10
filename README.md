@@ -26,27 +26,25 @@ npm install twig-markdown --save
 In typescript:
 
 ```typescript
-import twigMarkdown = require('twig-markdown');
-import twig = require('twig');
-
+import * as twig from 'twig';
+import twigMarkdown from 'twig-markdown';
 twig.extend(twigMarkdown);
 ```
 
 In javascript:
 
 ```js
-var twigMarkdown = require('twig-markdown');
-var twig = require('twig');
-
+const twigMarkdown = require('twig-markdown');
+const twig = require('./index');
 twig.extend(twigMarkdown);
 ```
 
 In javascript with [gulp-twig](https://github.com/zimmen/gulp-twig) plugin:
 
 ```js
-var twigMarkdown = require('twig-markdown');
-var twigFoo = require('twig-foo');
-var twig = require('gulp-twig');
+const twigMarkdown = require('twig-markdown');
+const twigFoo = require('twig-foo');
+const twig = require('gulp-twig');
 
 // With only markdown extension.
 twig({data: {}, extend: twigMarkdown});
@@ -60,23 +58,18 @@ twig({data: {}, extend: function(Twig){
 
 ## Contribute
 
-Install npm and tsd dependencies and you're good to go, assuming you also have globally installed [ts-node](https://github.com/TypeStrong/ts-node) and [typescript](https://github.com/Microsoft/TypeScript) packages, make sure to `cd dependency`.
+Install npm dependencies and you're good to go, assuming you also have globally [typescript](https://github.com/Microsoft/TypeScript):
 
 ```sh
 npm install
 ```
 
-Build using gulp, make sure to `cd build`.
-
+Test with mocha:
 ```sh
-gulp # or gulp watch
+npm test
 ```
 
-Test using mocha.
-
+Run build in watch mode:
 ```sh
-# TypeScript directly…
-mocha --require ts-node/register --ui tdd source/ts/Test/**/*.ts
-# …or built js.
-mocha --ui tdd product/js/Test/**/*.js
+npm start
 ```

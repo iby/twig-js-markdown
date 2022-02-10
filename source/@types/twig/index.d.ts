@@ -1,7 +1,7 @@
 // Todo: the same definition was supplied to official repo, watch for the pr to get accepted
 // todo: and remove this, https://github.com/justjohn/twig.js/pull/336.
 declare module 'twig' {
-    import {Context, Token, Parameters, Template, Core} from 'twig';
+    type Export = typeof Twig
 
     namespace Twig {
         export interface Token {
@@ -12,7 +12,7 @@ declare module 'twig' {
             regex?: RegExp;
             next?: any[];
             output?: any;
-            match?: string[];
+            match?: RegExpExecArray;
 
             parse?(token: any, context: any, chain: any): ParsedToken;
             compile?(token: any): CompiledToken;
@@ -75,13 +75,7 @@ declare module 'twig' {
             settings: any;
         }
 
-        namespace Core {
-            export class Error {
-                constructor(message: string);
-            }
-        }
-
-        export interface Core {
+        export interface Twig {
             trace: boolean;
             debug: boolean;
             cache: boolean;
@@ -90,13 +84,16 @@ declare module 'twig' {
             logic: LogicGroup;
             token: TokenGroup;
             compiler: Compiler;
-            // exports:Exports;
+            exports: Export;
 
             tokenize(template: string): any[];
             compile(tokens: any[]): CompiledToken[];
-            parse(tokens: CompiledToken[], context: any): string;
+            parse(tokens: CompiledToken[], context: any, allowAsync: boolean): string;
             prepare(data: string): CompiledToken[];
             output(output: any): string;
+
+            // This is only available on instance…
+            Error: { new(message: String) };
         }
 
         export namespace Parameters {
@@ -133,7 +130,7 @@ declare module 'twig' {
                 namespaces?: any
             }
 
-            export interface Core extends Template, TemplateOptions, Load {
+            export interface Twig extends Template, TemplateOptions, Load {
                 debug?: boolean;
                 trace?: boolean;
 
@@ -144,17 +141,17 @@ declare module 'twig' {
         }
     }
 
-    class Twig {
-        public static __express(path: string, options: any, fn: (err: Error, result: any) => void): void;
-        public static cache(value: boolean): void;
-        public static compile(markup: string, options: any): (context: Context) => any;
-        public static extend(definition: (core: Core) => void): void;
-        public static extendFilter(name: string, definition: (left: any, ...params: any[]) => string): void;
-        public static extendFunction(name: string, definition: (...params: any[]) => string): void;
-        public static extendTag(definition: Token): void;
-        public static extendTest(name: string, definition: (value: any) => boolean): void;
-        public static renderFile(path: string, options: any, fn: (error: Error, result: any) => void): void;
-        public static twig(parameters: Parameters.Core): Template;
+    namespace Twig {
+        function __express(path: string, options: any, fn: (err: Error, result: any) => void): void;
+        function cache(value: boolean): void;
+        function compile(markup: string, options: any): (context: Context) => any;
+        function extend(definition: (twig: Twig) => void): void;
+        function extendFilter(name: string, definition: (left: any, ...params: any[]) => string): void;
+        function extendFunction(name: string, definition: (...params: any[]) => string): void;
+        function extendTag(definition: Token): void;
+        function extendTest(name: string, definition: (value: any) => boolean): void;
+        function renderFile(path: string, options: any, fn: (error: Error, result: any) => void): void;
+        function twig(parameters: Parameters.Twig): Template;
     }
 
     export = Twig;

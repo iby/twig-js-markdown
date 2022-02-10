@@ -1,2 +1,2 @@
-import {extend} from './Extension';
+import { extend } from './Extension';
 export = extend;

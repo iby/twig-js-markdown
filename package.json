@@ -1,0 +1,40 @@
+{
+    "description": "Markdown extension for twig.js",
+    "license": "MIT",
+    "name": "twig-markdown",
+    "version": "0.2.1",
+    "repository": "https://github.com/iby/twig-js-markdown",
+    "scripts": {
+        "test": "mocha",
+        "start": "gulp watch",
+        "build": "gulp build"
+    },
+    "dependencies": {
+        "marked": "^4",
+        "twig": "^1"
+    },
+    "devDependencies": {
+        "@types/del": "^4",
+        "@types/gulp": "^4",
+        "@types/gulp-json-editor": "^2",
+        "@types/marked": "^4",
+        "@types/merge-stream": "^1",
+        "@types/mocha": "^9",
+        "@types/node": "^16",
+        "@types/should": "^13",
+        "del": "^4",
+        "gulp": "^4",
+        "gulp-json-editor": "^2",
+        "gulp-typescript": "^6.0.0-alpha.1",
+        "merge-stream": "^2",
+        "mocha": "^9",
+        "should": "^13",
+        "ts-node": "^10",
+        "typescript": "^4"
+    },
+    "keywords": [
+        "markdown",
+        "md",
+        "twig"
+    ]
+}

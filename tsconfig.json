@@ -1,0 +1,17 @@
+{
+    "compilerOptions": {
+        "strict": true,
+        "incremental": true,
+        "esModuleInterop": true,
+        "skipLibCheck": true,
+        "forceConsistentCasingInFileNames": true,
+        "noImplicitAny": true,
+        "noImplicitReturns": true,
+        "noUnusedLocals": false,
+        "removeComments": true,
+        "declaration": true,
+        "sourceMap": false,
+        "outDir": "./product/js",
+        "typeRoots": ["./source/@types", "./node_modules/@types"]
+    }
+}

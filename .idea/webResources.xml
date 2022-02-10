@@ -6,7 +6,7 @@
         <entryData>
           <resourceRoots>
             <path value="file://$PROJECT_DIR$/source/ts" />
-            <path value="file://$PROJECT_DIR$/source/dts" />
+            <path value="file://$PROJECT_DIR$/source/@types" />
           </resourceRoots>
         </entryData>
       </entry>
