@@ -23,20 +23,24 @@ npm install twig-markdown --save
 
 ## Use
 
-In typescript:
+In TypeScript:
 
 ```typescript
 import * as twig from 'twig';
 import twigMarkdown from 'twig-markdown';
 twig.extend(twigMarkdown);
+const template = twig.twig({ data: "{% markdown %}# Foo{% endmarkdown %}" });
+template.render();
 ```
 
-In javascript:
+In JavaScript:
 
 ```js
 const twigMarkdown = require('twig-markdown');
-const twig = require('./index');
+const twig = require('twig');
 twig.extend(twigMarkdown);
+const template = twig.twig({ data: "{% markdown %}# Foo{% endmarkdown %}" });
+template.render();
 ```
 
 In javascript with [gulp-twig](https://github.com/zimmen/gulp-twig) plugin:
