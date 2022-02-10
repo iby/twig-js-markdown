@@ -2,7 +2,7 @@
 
 `{% markdown %}` tag support for Twig templates using [twig.js](https://github.com/justjohn/twig.js) and [marked](https://github.com/chjj/marked) compiler. Compatible with [gulp-twig](https://github.com/zimmen/gulp-twig).
 
-```
+```html
 <div class="content">
     <div>
         {% markdown %}
@@ -17,7 +17,7 @@
 
 ## Install
 
-```
+```sh
 npm install twig-markdown --save
 ```
 
