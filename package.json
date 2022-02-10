@@ -2,7 +2,7 @@
     "description": "Markdown extension for twig.js",
     "license": "MIT",
     "name": "twig-markdown",
-    "version": "1.0.0",
+    "version": "1.0.1",
     "repository": "https://github.com/iby/twig-js-markdown",
     "scripts": {
         "test": "mocha",
