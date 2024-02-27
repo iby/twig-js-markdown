@@ -90,6 +90,19 @@ export function extend(twig: Twig, options: any = {}): void {
         open: false
     };
 
+    /**
+     * The `markdown_to_html` filter to match Twig's filter syntax.
+     *
+     * @param content The content that is passed to the filter.
+     * @returns The HTML that is rendered markdown content.
+     * @see https://twig.symfony.com/doc/3.x/filters/markdown_to_html.html
+     */
+    function markdownToHtmlFilter(content: string): string {
+        content = unindent(content);
+        return marked(content, options);
+    }
+
     twig.exports.extendTag(markdownToken);
     twig.exports.extendTag(endmarkdownToken);
+    twig.exports.extendFilter('markdown_to_html', markdownToHtmlFilter);
 }

@@ -12,6 +12,15 @@
     <div>
         {% markdown '../or/embed/external/file.md' %}{% endmarkdown %}
     </div>
+    <div>
+        {% apply markdown_to_html %}
+            # Title
+        {% endapply %}
+    </div>
+    <div>
+        {% set content = '# Title' %}
+        {{ content|markdown_to_html }}
+    </div>
 </div>
 ```
 
