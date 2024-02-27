@@ -26,6 +26,19 @@ suite('twig markdown', function() {
     //     var template = twig.twig({ data: "{% markdown './test/markdown.md' %}" });
     //     template.render().should.equal('<h1 id="foo">foo</h1>\n<p>bar</p>\n');
     // });
+
+    test('compile markdown in a filter with apply', function() {
+        const template = twig.twig({ data: "{% apply markdown_to_html %}# Foo{% endapply %}" });
+        template.render().should.equal('<h1 id="foo">Foo</h1>\n');
+    });
+
+    test('compile markdown in a filter with a pipe', function() {
+        const template = twig.twig({ data: "{{ content|markdown_to_html }}" });
+        const variables = {
+            'content': '# Foo'
+        }
+        template.render(variables).should.equal('<h1 id="foo">Foo</h1>\n');
+    });
 });
 
 suite('unindent', function() {
