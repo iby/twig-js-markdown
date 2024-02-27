@@ -32,6 +32,9 @@
         "ts-node": "^10",
         "typescript": "^4"
     },
+    "overrides":{
+        "source-map": "0.7.4"
+    },     
     "keywords": [
         "markdown",
         "md",
