@@ -2,12 +2,38 @@ import 'should';
 import * as twig from 'twig';
 import twigMarkdown from '../index';
 import { unindent } from '../Extension';
+import * as path from 'path';
 
 suite('twig markdown', function() {
+    const basePath = process.cwd()
+    teardown(() => process.chdir(basePath));
+
     twig.extend(twigMarkdown);
 
     test('compile markdown with a relative path to the current working directory', function() {
         const template = twig.twig({ data: "{% markdown './test/markdown.md' %}NOT FOUND!{% endmarkdown %}" });
+        template.render().should.equal('<h1 id="foo">foo</h1>\n<p>bar</p>\n');
+    });
+
+    test('compile markdown with a relative path to the root template file with relative path', async function() {
+        process.chdir('..');
+        const template = twig.twig({ path: path.join(basePath, "test/template.twig"), async: false });
+        template.render().should.equal('<h1 id="foo">foo</h1>\n<p>bar</p>\n');
+    });
+
+    test('compile markdown with a relative path to the root template file with absolute path', async function() {
+        const template = twig.twig({ path: path.join(process.cwd(), "/test/template.twig"), async: false });
+        template.render().should.equal('<h1 id="foo">foo</h1>\n<p>bar</p>\n');
+    });
+
+    test('compile markdown with a relative path to the leaf template file with relative path', async function() {
+        process.chdir('..');
+        const template = twig.twig({ path: path.join(basePath, "test/parent.twig"), async: false });
+        template.render().should.equal('<h1 id="foo">foo</h1>\n<p>bar</p>\n');
+    });
+
+    test('compile markdown with a relative path to the leaf template file with absolute path', async function() {
+        const template = twig.twig({ path: path.join(basePath, "/test/parent.twig"), async: false });
         template.render().should.equal('<h1 id="foo">foo</h1>\n<p>bar</p>\n');
     });
 
@@ -22,8 +48,9 @@ suite('twig markdown', function() {
         template.render().should.equal('<h1 id="foo">Foo</h1>\n');
     });
 
+    // TODO: Can't figure out how to make this work with an optional ending tag…
     // test('compile markdown using path without a closing tag', function() {
-    //     var template = twig.twig({ data: "{% markdown './test/markdown.md' %}" });
+    //     const template = twig.twig({ data: "{% markdown './test/markdown.md' %}" });
     //     template.render().should.equal('<h1 id="foo">foo</h1>\n<p>bar</p>\n');
     // });
 

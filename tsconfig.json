@@ -12,6 +12,5 @@
         "declaration": true,
         "sourceMap": false,
         "outDir": "./product/js",
-        "typeRoots": ["./source/@types", "./node_modules/@types"]
     }
 }

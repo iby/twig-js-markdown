@@ -1,10 +1,7 @@
-import { Twig, CompiledToken, Context, ParsedToken, Token } from 'twig';
+import { ExtendTagOptions, ParseContext, TagParseOutput, TagToken, Twig } from 'twig';
 import { marked } from 'marked';
 import * as fs from 'fs';
 import * as path from 'path';
-
-const pathJoin = path.join;
-const pathIsAbsolute = path.isAbsolute;
 
 export function unindent(string: string): string {
     const regexp: RegExp = /^\s+/;
@@ -33,18 +30,17 @@ export function unindent(string: string): string {
     return string.replace(new RegExp('^' + indentation), '').replace(new RegExp('\n' + indentation, 'g'), '\n');
 }
 
-export function extend(twig: Twig, options: any = {}): void {
+export function extend(twig: Twig, options: marked.MarkedOptions = {}): void {
 
-    // Fixme: this is a shitty hack until there's a better way dealing with definitions, twig repository accepts
-    // fixme: typings PR… Without this depending projects require the full-blown twig definition.
+    // See for details: https://github.com/twigjs/twig.js/wiki/Extending-twig.js-With-Custom-Tags
 
-    const markdownToken: Token = {
+    const markdownToken: ExtendTagOptions = {
         type: 'markdown',
         regex: /^markdown(?:\s+(.+))?$/,
         next: ['endmarkdown'],
         open: true,
-        compile: function(token: Token): CompiledToken {
-            const compiledToken = token as CompiledToken;
+        compile: function(token: TagToken): TagToken {
+            const compiledToken = token;
             const match = token.match!;
 
             // Turn parameters into tokens, we may or may not receive the file path, much explicitly check
@@ -54,26 +50,28 @@ export function extend(twig: Twig, options: any = {}): void {
                 value: match[1]
             } as any]).stack;
 
-            delete token.match;
+            // Before this update we were deleting the whole match, which isn't allowed by official types.
+            // But this works – hopefully that's what's needed…
+            delete token.match[1];
             return compiledToken;
         },
-        parse: function(token: CompiledToken, context: Context, chain: boolean): ParsedToken {
+        parse: function(token: TagToken, context: ParseContext, chain: boolean): TagParseOutput {
             let stack = token?.stack || [];
-            let path = stack.length > 0 ? twig.expression.parse.apply(this, [stack as any, context]) : null;
-            const file = context == null ? null : context['_file'];
+            let markdownPath = stack.length > 0 ? twig.expression.parse.apply(this, [stack, context]) as string : null;
             let markdown: string;
 
             // Make markdown file location relative to template file if we have that information.
-            if (path != null && !pathIsAbsolute(path)) {
-                path = pathJoin(file != null && file.base != null ? file.base : process.cwd(), path);
+            if (markdownPath != null && !path.isAbsolute(markdownPath)) {
+                const templatePath = (this as any)?.template?.path;
+                markdownPath = path.join(templatePath != null ? path.dirname(templatePath) : process.cwd(), markdownPath);
             }
 
-            if (path == null) {
-                markdown = unindent(this.parse!(token.output, context, false) as any);
-            } else if (fs.existsSync(path)) {
-                markdown = fs.readFileSync(path, 'utf8');
+            if (markdownPath == null) {
+                markdown = unindent(this.parse!((token as any).output, context, false) as any);
+            } else if (fs.existsSync(markdownPath)) {
+                markdown = fs.readFileSync(markdownPath, 'utf8');
             } else {
-                throw new twig.Error('Markdown file `' + path + '` could not be found.');
+                throw new Error('Markdown file `' + markdownPath + '` could not be found.');
             }
 
             return {
@@ -83,7 +81,7 @@ export function extend(twig: Twig, options: any = {}): void {
         }
     };
 
-    const endmarkdownToken: Token = {
+    const endmarkdownToken: ExtendTagOptions = {
         type: 'endmarkdown',
         regex: /^endmarkdown$/,
         next: [],
@@ -92,9 +90,8 @@ export function extend(twig: Twig, options: any = {}): void {
 
     /**
      * The `markdown_to_html` filter to match Twig's filter syntax.
-     *
-     * @param content The content that is passed to the filter.
-     * @returns The HTML that is rendered markdown content.
+     * @param content The markdown content passed to the filter.
+     * @returns The HTML rendered from the passed markdown content.
      * @see https://twig.symfony.com/doc/3.x/filters/markdown_to_html.html
      */
     function markdownToHtmlFilter(content: string): string {
