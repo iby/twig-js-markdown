@@ -1,5 +1,5 @@
 import { ExtendTagOptions, ParseContext, TagParseOutput, TagToken, Twig } from 'twig';
-import { marked } from 'marked';
+import { marked, MarkedOptions } from 'marked';
 import * as fs from 'fs';
 import * as path from 'path';
 
@@ -30,7 +30,7 @@ export function unindent(string: string): string {
     return string.replace(new RegExp('^' + indentation), '').replace(new RegExp('\n' + indentation, 'g'), '\n');
 }
 
-export function extend(twig: Twig, options: marked.MarkedOptions = {}): void {
+export function extend(twig: Twig, options: MarkedOptions = {}): void {
 
     // See for details: https://github.com/twigjs/twig.js/wiki/Extending-twig.js-With-Custom-Tags
 

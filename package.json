@@ -14,27 +14,26 @@
     },
     "dependencies": {
         "@types/twig": "^1",
-        "marked": "^4",
+        "marked": "^10",
         "twig": "^1"
     },
     "devDependencies": {
         "@types/del": "^4",
         "@types/gulp": "^4",
         "@types/gulp-json-editor": "^2",
-        "@types/marked": "^4",
         "@types/merge-stream": "^1",
-        "@types/mocha": "^9",
-        "@types/node": "^16",
+        "@types/mocha": "^10",
+        "@types/node": "^20",
         "@types/should": "^13",
-        "del": "^4",
+        "del": "^6",
         "gulp": "^4",
         "gulp-json-editor": "^2",
         "gulp-typescript": "^6.0.0-alpha.1",
         "merge-stream": "^2",
-        "mocha": "^9",
+        "mocha": "^10",
         "should": "^13",
         "ts-node": "^10",
-        "typescript": "^4"
+        "typescript": "^5"
     },
     "overrides": {
         "source-map": "0.7.4"
