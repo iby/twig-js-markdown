@@ -15,7 +15,7 @@
     "dependencies": {
         "@types/twig": "^1",
         "marked": "^10",
-        "twig": "^1"
+        "twig": "^1 || ^2"
     },
     "devDependencies": {
         "@types/del": "^4",
@@ -26,7 +26,7 @@
         "@types/node": "^20",
         "@types/should": "^13",
         "del": "^6",
-        "gulp": "^4",
+        "gulp": "^5.0.1",
         "gulp-json-editor": "^2",
         "gulp-typescript": "^6.0.0-alpha.1",
         "merge-stream": "^2",
