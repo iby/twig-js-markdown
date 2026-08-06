@@ -2,7 +2,7 @@
     "description": "Markdown extension for twig.js",
     "license": "MIT",
     "name": "twig-markdown",
-    "version": "1.1.2",
+    "version": "1.1.3",
     "type": "commonjs",
     "repository": {
         "type": "git",
@@ -15,7 +15,7 @@
     },
     "dependencies": {
         "@types/twig": "^1",
-        "marked": "^10",
+        "marked": "^18",
         "twig": "^1 || ^2 || ^3"
     },
     "devDependencies": {

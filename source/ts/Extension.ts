@@ -1,5 +1,5 @@
 import { ExtendTagOptions, ParseContext, TagParseOutput, TagToken, Twig } from 'twig';
-import { marked, MarkedOptions } from 'marked';
+import { Marked, MarkedExtension } from 'marked';
 import * as fs from 'fs';
 import * as path from 'path';
 
@@ -30,7 +30,12 @@ export function unindent(string: string): string {
     return string.replace(new RegExp('^' + indentation), '').replace(new RegExp('\n' + indentation, 'g'), '\n');
 }
 
-export function extend(twig: Twig, options: MarkedOptions = {}): void {
+export function extend(twig: Twig, options: MarkedExtension = {}): void {
+
+    // Marked instance holding the given configuration, this is the way marked recommends passing a renderer,
+    // tokenizer or hooks. Twig tags and filters must return synchronously, hence `async: false` on every parse.
+    const marked = new Marked(options);
+    const parseMarkdown = (source: string): string => marked.parse(source, { async: false });
 
     // See for details: https://github.com/twigjs/twig.js/wiki/Extending-twig.js-With-Custom-Tags
 
@@ -76,7 +81,7 @@ export function extend(twig: Twig, options: MarkedOptions = {}): void {
 
             return {
                 chain: chain,
-                output: markdown == '' ? '' : marked(markdown, options)
+                output: markdown == '' ? '' : parseMarkdown(markdown)
             };
         }
     };
@@ -95,8 +100,7 @@ export function extend(twig: Twig, options: MarkedOptions = {}): void {
      * @see https://twig.symfony.com/doc/3.x/filters/markdown_to_html.html
      */
     function markdownToHtmlFilter(content: string): string {
-        content = unindent(content);
-        return marked(content, options);
+        return parseMarkdown(unindent(content));
     }
 
     twig.exports.extendTag(markdownToken);
