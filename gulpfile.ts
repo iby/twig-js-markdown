@@ -23,9 +23,13 @@ const compile = () => new Promise<void>((resolve, reject) => {
 
 // Copy any associated files to product, package details must be updated for npm deployment.
 const copy = () => {
-    const packagePatch: Object = {
-        main: 'js/index.js',
-        typings: 'ts/index.d.ts'
+    // Paths become relative to product, and prepack must not carry over: it would
+    // rerun the build when packing the product directory itself.
+    const packagePatch = (contents: any) => {
+        delete contents.scripts.prepack;
+        contents.main = 'js/index.js';
+        contents.typings = 'ts/index.d.ts';
+        return contents;
     };
 
     return merge(

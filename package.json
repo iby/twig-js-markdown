@@ -4,6 +4,8 @@
     "name": "twig-markdown",
     "version": "1.1.4",
     "type": "commonjs",
+    "main": "product/js/index.js",
+    "typings": "product/ts/index.d.ts",
     "repository": {
         "type": "git",
         "url": "git+https://github.com/iby/twig-js-markdown.git"
@@ -11,7 +13,8 @@
     "scripts": {
         "test": "mocha",
         "start": "gulp watch",
-        "build": "gulp build"
+        "build": "gulp build",
+        "prepack": "npm run build"
     },
     "dependencies": {
         "@types/twig": "^1",
