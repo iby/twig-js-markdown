@@ -2,5 +2,10 @@
     "files": ["./source/ts/index.ts"],
     "include": ["./source/ts/**/*.ts"],
     "exclude": ["./source/ts/Test/**/*"],
-    "extends": "./tsconfig.json"
+    "extends": "./tsconfig.json",
+    "compilerOptions": {
+        "incremental": false,
+        "rootDir": "./source/ts",
+        "declarationDir": "./product/ts"
+    }
 }

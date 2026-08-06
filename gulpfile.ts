@@ -1,5 +1,5 @@
 import * as gulp from 'gulp';
-import * as tsc from 'gulp-typescript';
+import { spawn } from 'child_process';
 import del from 'del';
 import json from 'gulp-json-editor';
 import merge from 'merge-stream';
@@ -14,30 +14,27 @@ const clean = () => {
     return del(paths, { force: true });
 };
 
-const build = () => {
-    const project = tsc.createProject('./tsconfig.build.json', { rootDir: './source/ts' });
+// Compile typescript to product, the build config takes care of the javascript and declaration output paths.
+const compile = () => new Promise<void>((resolve, reject) => {
+    const tsc = spawn(process.execPath, [require.resolve('typescript/bin/tsc'), '--project', './tsconfig.build.json'], { stdio: 'inherit' });
+    tsc.on('error', reject);
+    tsc.on('close', code => code === 0 ? resolve() : reject(new Error(`Typescript compiler exited with code ${code}.`)));
+});
 
-    // Must update package details that goes into product for npm deployment.
+// Copy any associated files to product, package details must be updated for npm deployment.
+const copy = () => {
     const packagePatch: Object = {
         main: 'js/index.js',
         typings: 'ts/index.d.ts'
     };
 
-    // Compile typescript to product, copy any associated files there too.
-    const compileStream = project.src().pipe(project());
-    const fileStream = merge(
-        gulp.src('./package.json', { base: '.' }).pipe(json(packagePatch)).pipe(gulp.dest('./product')),
-        gulp.src('./README.md', { base: '.' }).pipe(gulp.dest('./product')),
-        gulp.src('./source/json/**/*', { base: './source' }).pipe(gulp.dest('./product'))
-    );
-
-    // Merge the two output streams, so this task is finished when the IO of both operations are done.
     return merge(
-        compileStream.dts.pipe(gulp.dest('./product/ts')),
-        compileStream.js.pipe(gulp.dest('./product/js')),
-        fileStream
+        gulp.src('./package.json', { base: '.' }).pipe(json(packagePatch)).pipe(gulp.dest('./product')),
+        gulp.src('./README.md', { base: '.' }).pipe(gulp.dest('./product'))
     );
 };
+
+const build = gulp.parallel(compile, copy);
 
 const watch = () => {
     return gulp.watch('./source/ts/**/*.ts', gulp.series(build));
